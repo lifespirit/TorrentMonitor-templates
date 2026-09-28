@@ -11,7 +11,7 @@ domains:
   - nnm-club.ws
 
 defaults:
-  access_mode: chromium
+  access_mode: flaresolverr
   timezone: Europe/Moscow
   page_timeout_seconds: 30
 
@@ -31,6 +31,11 @@ http:
 
 auth:
   type: form
+  logged_out:
+    contains_all:
+      - name="username"
+      - name="password"
+      - action="login.php"
   check:
     method: GET
     url: https://nnmclub.to/forum/index.php
@@ -43,6 +48,11 @@ auth:
   login_form:
     method: POST
     url: https://nnmclub.to/forum/login.php
+    captcha:
+      type: turnstile
+      url: https://nnmclub.to/forum/login.php
+      tabs_till_verify: 36
+      form_field: cf-turnstile-response
     headers:
       Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
       Accept-Language: ru-RU,ru;q=0.9,en;q=0.7
@@ -52,7 +62,7 @@ auth:
       username: "{{ credentials.login }}"
       password: "{{ credentials.password }}"
       autologin: "on"
-      login: Вход
+      login: "1"
 
 topic:
   ready:
